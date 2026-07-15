@@ -15,6 +15,9 @@ export default function App() {
         {Object.entries(pageContent).map(([path, content]) => (
           <Route key={path} path={`/${path}`} element={<PlaceholderPage {...content} />} />
         ))}
+        <Route path="/organisations" element={<Navigate to="/locations" replace />} />
+        <Route path="/programs" element={<Navigate to="/outreach" replace />} />
+        <Route path="/maps" element={<Navigate to="/locations" replace />} />
         <Route path="/about-preview" element={<AboutPreviewPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
