@@ -2,6 +2,8 @@
 
 NEXORA UI Preview is a separate, clickable concept environment for reviewing product ideas and workflows. It is intended initially for the NEXORA founder and a trusted goodwill technical advisor, and may later be shown to selected prospective customers.
 
+The current fictional advisor scenario uses a church-led multi-location network so church, outreach, and community-development workflows can be reviewed meaningfully. NEXORA is not positioned as an exclusively church-management product.
+
 This repository is **not** the production NEXORA application. It contains no backend, authentication, live integrations, analytics, tracking, or persistent data submission.
 
 ## What is included
@@ -88,7 +90,7 @@ All preview data must be invented, local, and safe to share with the intended re
 - Treat any screenshots, exports, or test fixtures as data and apply the same rules.
 - Review every change for accidental sensitive information before committing.
 
-`Horizon Community Network` and its records are fictional. The hierarchy labels supplied for this concept are illustrative and are not connected to a real organisation or real operational locations.
+`Horizon Church & Community Network` and all of its records are fictional. The supplied hierarchy labels are illustrative and are not connected to a real church, organisation, customer, person, or precise operational location.
 
 ## Preview limitations
 
@@ -104,13 +106,18 @@ All preview data must be invented, local, and safe to share with the intended re
 
 - `/` redirects to `/dashboard`
 - `/dashboard`
-- `/organisations`
 - `/people`
-- `/programs`
+- `/services-events`
+- `/groups`
+- `/volunteers`
+- `/care-follow-up`
 - `/outreach`
-- `/maps`
+- `/calendar`
+- `/locations`
 - `/reports`
 - `/settings`
 - `/about-preview`
+
+Legacy `/organisations`, `/programs`, and `/maps` links redirect to the nearest current preview area.
 
 Unknown routes show a local not-found screen with a working return link.

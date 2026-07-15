@@ -2,17 +2,21 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
   BarChart3,
   Building2,
+  CalendarDays,
   CalendarRange,
   ChevronDown,
   CircleHelp,
   FileText,
+  HandHeart,
+  HeartHandshake,
   LayoutDashboard,
-  Map,
+  MapPin,
   Menu,
   MessageSquareText,
   Settings,
   Sparkles,
   Users,
+  UsersRound,
   X,
 } from 'lucide-react'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -25,11 +29,14 @@ interface AppShellProps {
 
 const navigation = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
-  { label: 'Organisations', to: '/organisations', icon: Building2 },
   { label: 'People', to: '/people', icon: Users },
-  { label: 'Programs', to: '/programs', icon: CalendarRange },
+  { label: 'Services & Events', to: '/services-events', icon: CalendarRange },
+  { label: 'Groups', to: '/groups', icon: UsersRound },
+  { label: 'Volunteers', to: '/volunteers', icon: HandHeart },
+  { label: 'Care & Follow-up', to: '/care-follow-up', icon: HeartHandshake },
   { label: 'Outreach', to: '/outreach', icon: Sparkles },
-  { label: 'Maps', to: '/maps', icon: Map },
+  { label: 'Calendar', to: '/calendar', icon: CalendarDays },
+  { label: 'Locations', to: '/locations', icon: MapPin },
   { label: 'Reports', to: '/reports', icon: BarChart3 },
 ]
 
@@ -158,43 +165,43 @@ export function AppShell({ children }: AppShellProps) {
       </aside>
 
       <header className="topbar">
-        <div className="topbar-mobile-brand">
-          <div className="brand-mark small" aria-hidden="true">N</div>
-          <div>
-            <span className="brand-name">NEXORA</span>
-            <span className="brand-label">Advisor Preview</span>
+        <div className="topbar-inner">
+          <div className="topbar-mobile-brand">
+            <div className="brand-mark small" aria-hidden="true">N</div>
+            <div>
+              <span className="brand-name">NEXORA</span>
+              <span className="brand-label">Advisor Preview</span>
+            </div>
           </div>
-        </div>
 
-        <div className="organisation-selector-wrap">
-          <label htmlFor="organisation-selector">Viewing organisation</label>
-          <div className="select-shell">
-            <Building2 size={17} aria-hidden="true" />
-            <select id="organisation-selector" defaultValue="global">
-              <option value="global">Global Office</option>
-              <option value="country">India Country Office</option>
-              <option value="region">North Region</option>
-              <option value="delhi">Delhi Community Centre</option>
-              <option value="noida">Noida Outreach Centre</option>
-            </select>
-            <ChevronDown size={15} aria-hidden="true" />
+          <div className="organisation-selector-wrap">
+            <label htmlFor="organisation-selector">Viewing organisation</label>
+            <div className="select-shell">
+              <Building2 size={17} aria-hidden="true" />
+              <select id="organisation-selector" defaultValue="global">
+                {organisation.hierarchy.map((level) => (
+                  <option value={level.id} key={level.id}>{level.name}</option>
+                ))}
+              </select>
+              <ChevronDown size={15} aria-hidden="true" />
+            </div>
           </div>
-        </div>
 
-        <div className="topbar-actions">
-          <button
-            className="feedback-header-button"
-            type="button"
-            onClick={() => setIsFeedbackOpen(true)}
-          >
-            <MessageSquareText size={18} aria-hidden="true" />
-            <span>Feedback</span>
-          </button>
-          <div className="advisor-profile" aria-label="Preview user">
-            <div className="avatar-placeholder" aria-hidden="true">AD</div>
-            <div className="advisor-copy">
-              <strong>Advisor view</strong>
-              <span>Review access</span>
+          <div className="topbar-actions">
+            <button
+              className="feedback-header-button"
+              type="button"
+              onClick={() => setIsFeedbackOpen(true)}
+            >
+              <MessageSquareText size={18} aria-hidden="true" />
+              <span>Feedback</span>
+            </button>
+            <div className="advisor-profile" aria-label="Preview user">
+              <div className="avatar-placeholder" aria-hidden="true">AD</div>
+              <div className="advisor-copy">
+                <strong>Advisor view</strong>
+                <span>Review access</span>
+              </div>
             </div>
           </div>
         </div>
