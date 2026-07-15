@@ -158,43 +158,45 @@ export function AppShell({ children }: AppShellProps) {
       </aside>
 
       <header className="topbar">
-        <div className="topbar-mobile-brand">
-          <div className="brand-mark small" aria-hidden="true">N</div>
-          <div>
-            <span className="brand-name">NEXORA</span>
-            <span className="brand-label">Advisor Preview</span>
+        <div className="topbar-inner">
+          <div className="topbar-mobile-brand">
+            <div className="brand-mark small" aria-hidden="true">N</div>
+            <div>
+              <span className="brand-name">NEXORA</span>
+              <span className="brand-label">Advisor Preview</span>
+            </div>
           </div>
-        </div>
 
-        <div className="organisation-selector-wrap">
-          <label htmlFor="organisation-selector">Viewing organisation</label>
-          <div className="select-shell">
-            <Building2 size={17} aria-hidden="true" />
-            <select id="organisation-selector" defaultValue="global">
-              <option value="global">Global Office</option>
-              <option value="country">India Country Office</option>
-              <option value="region">North Region</option>
-              <option value="delhi">Delhi Community Centre</option>
-              <option value="noida">Noida Outreach Centre</option>
-            </select>
-            <ChevronDown size={15} aria-hidden="true" />
+          <div className="organisation-selector-wrap">
+            <label htmlFor="organisation-selector">Viewing organisation</label>
+            <div className="select-shell">
+              <Building2 size={17} aria-hidden="true" />
+              <select id="organisation-selector" defaultValue="global">
+                <option value="global">Global Office</option>
+                <option value="country">India Country Office</option>
+                <option value="region">North Region</option>
+                <option value="delhi">Delhi Community Centre</option>
+                <option value="noida">Noida Outreach Centre</option>
+              </select>
+              <ChevronDown size={15} aria-hidden="true" />
+            </div>
           </div>
-        </div>
 
-        <div className="topbar-actions">
-          <button
-            className="feedback-header-button"
-            type="button"
-            onClick={() => setIsFeedbackOpen(true)}
-          >
-            <MessageSquareText size={18} aria-hidden="true" />
-            <span>Feedback</span>
-          </button>
-          <div className="advisor-profile" aria-label="Preview user">
-            <div className="avatar-placeholder" aria-hidden="true">AD</div>
-            <div className="advisor-copy">
-              <strong>Advisor view</strong>
-              <span>Review access</span>
+          <div className="topbar-actions">
+            <button
+              className="feedback-header-button"
+              type="button"
+              onClick={() => setIsFeedbackOpen(true)}
+            >
+              <MessageSquareText size={18} aria-hidden="true" />
+              <span>Feedback</span>
+            </button>
+            <div className="advisor-profile" aria-label="Preview user">
+              <div className="avatar-placeholder" aria-hidden="true">AD</div>
+              <div className="advisor-copy">
+                <strong>Advisor view</strong>
+                <span>Review access</span>
+              </div>
             </div>
           </div>
         </div>
