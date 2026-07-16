@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { MessageSquareText, X } from 'lucide-react'
+import { AccessibleDialog } from './AccessibleDialog'
 
 interface FeedbackModalProps {
   isOpen: boolean
@@ -7,51 +8,8 @@ interface FeedbackModalProps {
   screenName: string
 }
 
-const focusableSelector =
-  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-
 export function FeedbackModal({ isOpen, onClose, screenName }: FeedbackModalProps) {
-  const dialogRef = useRef<HTMLDivElement>(null)
-  const closeButtonRef = useRef<HTMLButtonElement>(null)
-  const triggerRef = useRef<HTMLElement | null>(null)
   const [showConfirmation, setShowConfirmation] = useState(false)
-
-  useEffect(() => {
-    if (!isOpen) return
-
-    triggerRef.current = document.activeElement as HTMLElement
-    document.body.classList.add('modal-open')
-    closeButtonRef.current?.focus()
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-
-      if (event.key === 'Tab' && dialogRef.current) {
-        const focusable = Array.from(
-          dialogRef.current.querySelectorAll<HTMLElement>(focusableSelector),
-        )
-        const first = focusable[0]
-        const last = focusable[focusable.length - 1]
-
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault()
-          last?.focus()
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault()
-          first?.focus()
-        }
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-      document.body.classList.remove('modal-open')
-      triggerRef.current?.focus()
-    }
-  }, [isOpen, onClose])
-
-  if (!isOpen) return null
 
   const closeModal = () => {
     setShowConfirmation(false)
@@ -59,14 +17,15 @@ export function FeedbackModal({ isOpen, onClose, screenName }: FeedbackModalProp
   }
 
   return (
-    <div className="modal-backdrop" onMouseDown={closeModal}>
+    <AccessibleDialog
+      bodyClassName="modal-open"
+      className="modal-backdrop"
+      isOpen={isOpen}
+      labelledBy="feedback-title"
+      onClose={closeModal}
+    >
       <div
         className="feedback-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="feedback-title"
-        onMouseDown={(event) => event.stopPropagation()}
-        ref={dialogRef}
       >
         <div className="modal-header">
           <div className="modal-title-group">
@@ -83,7 +42,7 @@ export function FeedbackModal({ isOpen, onClose, screenName }: FeedbackModalProp
             type="button"
             onClick={closeModal}
             aria-label="Close feedback dialog"
-            ref={closeButtonRef}
+            data-dialog-initial-focus
           >
             <X size={20} />
           </button>
@@ -165,6 +124,6 @@ export function FeedbackModal({ isOpen, onClose, screenName }: FeedbackModalProp
           </form>
         )}
       </div>
-    </div>
+    </AccessibleDialog>
   )
 }

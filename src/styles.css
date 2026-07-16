@@ -1491,7 +1491,7 @@ textarea:focus-visible {
 }
 
 .mobile-bottom-nav,
-.mobile-drawer-backdrop {
+.mobile-drawer-backdrop:not([open]) {
   display: none;
 }
 
@@ -1874,14 +1874,49 @@ textarea:focus-visible {
 }
 
 /* Feedback modal */
-.modal-backdrop {
+.accessible-dialog {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+}
+
+.accessible-dialog:not([open]) {
+  display: none;
+}
+
+.dialog-dismiss-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.feedback-modal,
+.sermon-source-modal,
+.generate-questions-modal,
+.mobile-drawer {
+  position: relative;
+  z-index: 1;
+}
+
+.modal-backdrop {
   display: grid;
   padding: 24px;
   overflow-y: auto;
   place-items: center;
+}
+
+.modal-backdrop::backdrop {
   background: rgba(8, 28, 25, 0.58);
   backdrop-filter: blur(4px);
   animation: fade-in 140ms ease-out;
@@ -2230,12 +2265,13 @@ textarea:focus-visible {
   }
   .mobile-nav-item.active { color: var(--forest-mid); background: var(--mint-soft); }
   .mobile-drawer-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 80;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
+    padding: 0;
+    overflow: hidden;
+  }
+  .mobile-drawer-backdrop::backdrop {
     background: rgba(8, 28, 25, 0.5);
     animation: fade-in 150ms ease-out;
   }

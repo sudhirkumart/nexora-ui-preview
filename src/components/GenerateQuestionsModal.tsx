@@ -1,5 +1,6 @@
 import { Sparkles, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import { AccessibleDialog } from './AccessibleDialog'
 import {
   questionAudiences,
   questionStyles,
@@ -19,9 +20,6 @@ interface GenerateQuestionsModalProps {
   onGenerate: (request: QuestionGenerationRequest) => void
 }
 
-const focusableSelector =
-  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-
 export function GenerateQuestionsModal({
   isOpen,
   onClose,
@@ -30,56 +28,17 @@ export function GenerateQuestionsModal({
   const [audience, setAudience] = useState<QuestionAudience>('General congregation')
   const [style, setStyle] = useState<QuestionStyle>('Reflection')
   const [count, setCount] = useState<3 | 5 | 10>(3)
-  const dialogRef = useRef<HTMLDivElement>(null)
-  const closeButtonRef = useRef<HTMLButtonElement>(null)
-  const triggerRef = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    if (!isOpen) return
-
-    triggerRef.current = document.activeElement as HTMLElement
-    document.body.classList.add('modal-open')
-    closeButtonRef.current?.focus()
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-
-      if (event.key === 'Tab' && dialogRef.current) {
-        const focusable = Array.from(
-          dialogRef.current.querySelectorAll<HTMLElement>(focusableSelector),
-        )
-        const first = focusable[0]
-        const last = focusable[focusable.length - 1]
-
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault()
-          last?.focus()
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault()
-          first?.focus()
-        }
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-      document.body.classList.remove('modal-open')
-      triggerRef.current?.focus()
-    }
-  }, [isOpen, onClose])
-
-  if (!isOpen) return null
 
   return (
-    <div className="modal-backdrop" onMouseDown={onClose}>
+    <AccessibleDialog
+      bodyClassName="modal-open"
+      className="modal-backdrop"
+      isOpen={isOpen}
+      labelledBy="generate-questions-title"
+      onClose={onClose}
+    >
       <div
         className="generate-questions-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="generate-questions-title"
-        onMouseDown={(event) => event.stopPropagation()}
-        ref={dialogRef}
       >
         <div className="modal-header">
           <div className="modal-title-group">
@@ -94,7 +53,7 @@ export function GenerateQuestionsModal({
             type="button"
             aria-label="Close generate questions dialog"
             onClick={onClose}
-            ref={closeButtonRef}
+            data-dialog-initial-focus
           >
             <X size={20} aria-hidden="true" />
           </button>
@@ -145,6 +104,6 @@ export function GenerateQuestionsModal({
           </div>
         </form>
       </div>
-    </div>
+    </AccessibleDialog>
   )
 }

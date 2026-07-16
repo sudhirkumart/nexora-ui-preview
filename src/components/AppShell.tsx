@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { FeedbackModal } from './FeedbackModal'
+import { AccessibleDialog } from './AccessibleDialog'
 import { organisation } from '../data/mockData'
 
 interface AppShellProps {
@@ -46,9 +47,6 @@ const secondaryNavigation = [
 ]
 
 const mobileNavigation = navigation.slice(0, 4)
-const focusableSelector =
-  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-
 function NavigationItem({
   label,
   to,
@@ -71,8 +69,6 @@ export function AppShell({ children }: AppShellProps) {
   const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
-  const mobileDrawerRef = useRef<HTMLElement>(null)
-  const mobileDrawerCloseRef = useRef<HTMLButtonElement>(null)
   const mobileMenuTriggerRef = useRef<HTMLButtonElement>(null)
 
   const routeLabel = location.pathname.startsWith('/services')
@@ -87,41 +83,14 @@ export function AppShell({ children }: AppShellProps) {
   }, [location.pathname])
 
   useEffect(() => {
-    document.body.classList.toggle('nav-open', isMobileMenuOpen)
-    if (!isMobileMenuOpen) return
-
-    const menuTrigger = mobileMenuTriggerRef.current
-    mobileDrawerCloseRef.current?.focus()
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsMobileMenuOpen(false)
-        return
-      }
-
-      if (event.key === 'Tab' && mobileDrawerRef.current) {
-        const focusable = Array.from(
-          mobileDrawerRef.current.querySelectorAll<HTMLElement>(focusableSelector),
-        )
-        const first = focusable[0]
-        const last = focusable[focusable.length - 1]
-
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault()
-          last?.focus()
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault()
-          first?.focus()
-        }
-      }
+    const desktopQuery = window.matchMedia('(min-width: 961px)')
+    const closeMobileMenuOnDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) setIsMobileMenuOpen(false)
     }
 
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-      document.body.classList.remove('nav-open')
-      menuTrigger?.focus()
-    }
-  }, [isMobileMenuOpen])
+    desktopQuery.addEventListener('change', closeMobileMenuOnDesktop)
+    return () => desktopQuery.removeEventListener('change', closeMobileMenuOnDesktop)
+  }, [])
 
   return (
     <div className="app-layout">
@@ -247,16 +216,17 @@ export function AppShell({ children }: AppShellProps) {
         </button>
       </nav>
 
-      {isMobileMenuOpen && (
-        <div className="mobile-drawer-backdrop" onMouseDown={() => setIsMobileMenuOpen(false)}>
+      <AccessibleDialog
+        bodyClassName="nav-open"
+        className="mobile-drawer-backdrop"
+        dismissLabel="Close navigation"
+        isOpen={isMobileMenuOpen}
+        labelledBy="mobile-menu-title"
+        onClose={() => setIsMobileMenuOpen(false)}
+      >
           <aside
             className="mobile-drawer"
             id="mobile-menu"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="mobile-menu-title"
-            onMouseDown={(event) => event.stopPropagation()}
-            ref={mobileDrawerRef}
           >
             <div className="drawer-header">
               <div>
@@ -268,7 +238,7 @@ export function AppShell({ children }: AppShellProps) {
                 type="button"
                 onClick={() => setIsMobileMenuOpen(false)}
                 aria-label="Close navigation"
-                ref={mobileDrawerCloseRef}
+                data-dialog-initial-focus
               >
                 <X size={21} />
               </button>
@@ -297,8 +267,7 @@ export function AppShell({ children }: AppShellProps) {
               <p>Preview 0.1 · Fictional sample data</p>
             </div>
           </aside>
-        </div>
-      )}
+      </AccessibleDialog>
 
       <FeedbackModal
         isOpen={isFeedbackOpen}
