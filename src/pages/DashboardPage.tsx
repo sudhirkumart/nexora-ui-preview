@@ -108,7 +108,7 @@ export function DashboardPage() {
             </div>
           </dl>
 
-          <Link className="service-action-link" to="/services-events">
+          <Link className="service-action-link" to="/services/community-worship-gathering">
             Review service readiness <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </section>
