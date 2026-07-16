@@ -30,7 +30,7 @@ interface AppShellProps {
 const navigation = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
   { label: 'People', to: '/people', icon: Users },
-  { label: 'Services & Events', to: '/services-events', icon: CalendarRange },
+  { label: 'Services & Events', to: '/services', icon: CalendarRange },
   { label: 'Groups', to: '/groups', icon: UsersRound },
   { label: 'Volunteers', to: '/volunteers', icon: HandHeart },
   { label: 'Care & Follow-up', to: '/care-follow-up', icon: HeartHandshake },
@@ -75,8 +75,9 @@ export function AppShell({ children }: AppShellProps) {
   const mobileDrawerCloseRef = useRef<HTMLButtonElement>(null)
   const mobileMenuTriggerRef = useRef<HTMLButtonElement>(null)
 
-  const routeLabel =
-    [...navigation, ...secondaryNavigation].find((item) =>
+  const routeLabel = location.pathname.startsWith('/services')
+    ? 'Services & Events'
+    : [...navigation, ...secondaryNavigation].find((item) =>
       location.pathname === '/' ? item.to === '/dashboard' : item.to === location.pathname,
     )?.label ?? 'Preview'
 
