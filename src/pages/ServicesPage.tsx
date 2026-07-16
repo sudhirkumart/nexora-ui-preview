@@ -1,4 +1,13 @@
-import { Filter, RotateCcw } from 'lucide-react'
+import {
+  CheckCircle2,
+  Clock3,
+  FileText,
+  Filter,
+  MessageCircleQuestion,
+  RotateCcw,
+  Sparkles,
+  Video,
+} from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { CompletedServiceRow } from '../components/CompletedServiceRow'
 import { ServiceListItem } from '../components/ServiceListItem'
@@ -14,12 +23,23 @@ const servicesPageViews: { id: ServicesPageView; label: string }[] = [
   { id: 'insights', label: 'Insights' },
 ]
 
-const insightPreviewAreas = [
-  { title: 'Sermon summaries', description: 'Concise, reviewable overviews of completed messages.' },
-  { title: 'Key headings', description: 'A simple outline of the main sections and themes.' },
-  { title: 'Review questions', description: 'Draft questions prepared for responsible human review.' },
-  { title: 'Discussion prompts', description: 'Prompts for future small-group and ministry conversations.' },
-  { title: 'Review status', description: 'A clear indication of what is ready, reviewed, or still in progress.' },
+const insightSourceStates = ['Sermon uploaded', 'Processing', 'No sermon added'] as const
+const insightReviewStatuses = ['Draft generated', 'Needs review', 'Approved', 'Shared'] as const
+
+const insightService = completedServices.find((service) => service.id === 'sunday-worship-12-july')!
+const insightSermon = insightService.sermon!
+
+const discussionPrompts = [
+  'Where is attentive service most needed in our community this week?',
+  'How can shared responsibility become a sustainable ministry practice?',
+  'What would make practical hope visible beyond the Sunday gathering?',
+]
+
+const followUpIdeas = [
+  'Call first-time attendees who requested a conversation.',
+  'Prepare the reviewed questions for small-group facilitators.',
+  'Share approved sermon notes with ministry leaders.',
+  'Identify prayer or care needs for confidential follow-up.',
 ]
 
 export function ServicesPage() {
@@ -27,6 +47,8 @@ export function ServicesPage() {
   const [locationFilter, setLocationFilter] = useState('all')
   const [dateFilter, setDateFilter] = useState('14')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [insightSourceState, setInsightSourceState] = useState<(typeof insightSourceStates)[number]>('Sermon uploaded')
+  const [insightReviewStatus, setInsightReviewStatus] = useState<(typeof insightReviewStatuses)[number]>('Needs review')
 
   const filteredServices = useMemo(() => services.filter((service) => {
     const matchesLocation = locationFilter === 'all' || service.location === locationFilter
@@ -193,27 +215,183 @@ export function ServicesPage() {
       )}
 
       {activeView === 'insights' && (
-        <section className="services-tab-view services-insights-view" id="services-insights-view" aria-labelledby="services-insights-title">
-          <div className="services-tab-heading">
+        <div className="services-tab-view services-insights-view" id="services-insights-view">
+          <section className="services-insights-intro" aria-labelledby="services-insights-title">
             <div>
-              <p className="eyebrow">Future review workspace</p>
+              <p className="eyebrow">Media-to-review preview</p>
               <h2 id="services-insights-title">Sermon insights</h2>
-              <p>A calm placeholder for future reviewed sermon material.</p>
+              <p>
+                Sermon and service-media insights will appear here after a fictional source is
+                available. This preview demonstrates possible states and a human-review workflow only.
+              </p>
             </div>
-          </div>
-          <div className="services-insights-list">
-            {insightPreviewAreas.map((area) => (
-              <article key={area.title}>
-                <h3>{area.title}</h3>
-                <p>{area.description}</p>
-              </article>
-            ))}
-          </div>
-          <p className="services-tab-note">
-            This section is a visual placeholder only. Insight generation, review workflows, and
-            publishing are not connected here.
-          </p>
-        </section>
+            <span className="insights-preview-label"><Sparkles size={16} aria-hidden="true" /> UI preview</span>
+          </section>
+
+          <section className="insight-source-card" aria-labelledby="insight-source-title">
+            <div className="insight-card-heading">
+              <div>
+                <p className="eyebrow">Sermon / media source</p>
+                <h3 id="insight-source-title">Source state</h3>
+              </div>
+              <span className={`insight-source-status insight-source-${insightSourceState.toLowerCase().replace(/\s+/g, '-')}`}>
+                <span aria-hidden="true" /> {insightSourceState}
+              </span>
+            </div>
+
+            <div className="insight-state-switcher" aria-label="Preview sermon source state">
+              {insightSourceStates.map((state) => (
+                <button
+                  aria-pressed={insightSourceState === state}
+                  className={insightSourceState === state ? 'active' : undefined}
+                  key={state}
+                  onClick={() => setInsightSourceState(state)}
+                  type="button"
+                >
+                  {state}
+                </button>
+              ))}
+            </div>
+
+            {insightSourceState !== 'No sermon added' && (
+              <dl className="insight-source-metadata">
+                <div><dt>Service</dt><dd>{insightService.name}</dd></div>
+                <div><dt>Date</dt><dd>{insightService.dateLabel}</dd></div>
+                <div><dt>Speaker</dt><dd>{insightSermon.speaker}</dd></div>
+                <div><dt>Source type</dt><dd>{insightSermon.sourceType}</dd></div>
+              </dl>
+            )}
+          </section>
+
+          {insightSourceState === 'No sermon added' && (
+            <section className="insights-empty-state" aria-labelledby="insights-empty-title">
+              <Video size={25} aria-hidden="true" />
+              <h3 id="insights-empty-title">No sermon insights available yet.</h3>
+              <p>
+                Future versions can support fictional workflow previews for YouTube links or uploaded
+                sermon files. Upload and external-link processing are not available in this iteration.
+              </p>
+            </section>
+          )}
+
+          {insightSourceState === 'Processing' && (
+            <section className="insights-processing-state" aria-labelledby="insights-processing-title">
+              <Clock3 size={24} aria-hidden="true" />
+              <div>
+                <h3 id="insights-processing-title">Insights are being prepared</h3>
+                <p>
+                  This simulated state shows where processing feedback could appear. No transcript,
+                  media, or AI service is running.
+                </p>
+              </div>
+            </section>
+          )}
+
+          {insightSourceState === 'Sermon uploaded' && (
+            <>
+              <section className="insight-summary-card" aria-labelledby="insight-summary-title">
+                <div className="insight-card-heading">
+                  <div>
+                    <p className="eyebrow">Generated draft</p>
+                    <h3 id="insight-summary-title">Insight summary</h3>
+                  </div>
+                  <FileText size={20} aria-hidden="true" />
+                </div>
+                <p className="insight-summary-copy">{insightSermon.insights.summary}</p>
+                <dl className="insight-summary-facts">
+                  <div><dt>Key theme</dt><dd>Hope expressed through practical service</dd></div>
+                  <div><dt>Audience</dt><dd>General congregation and ministry teams</dd></div>
+                  <div><dt>Suggested follow-up angle</dt><dd>Connect reflection with one local action</dd></div>
+                </dl>
+              </section>
+
+              <div className="insights-content-grid">
+                <section className="insight-content-card" aria-labelledby="generated-headings-title">
+                  <div className="insight-card-heading compact">
+                    <div>
+                      <p className="eyebrow">Easy to scan</p>
+                      <h3 id="generated-headings-title">Generated headings</h3>
+                    </div>
+                  </div>
+                  <ol className="generated-heading-list">
+                    {[
+                      ...insightSermon.insights.mainHeadings,
+                      'Responding with sustainable care',
+                      'Carrying hope into the week ahead',
+                    ].map((heading) => <li key={heading}>{heading}</li>)}
+                  </ol>
+                </section>
+
+                <section className="insight-content-card" aria-labelledby="insight-questions-title">
+                  <div className="insight-card-heading compact">
+                    <div>
+                      <p className="eyebrow">Human review required</p>
+                      <h3 id="insight-questions-title">Review questions</h3>
+                    </div>
+                    <MessageCircleQuestion size={19} aria-hidden="true" />
+                  </div>
+                  <ul className="insight-question-list">
+                    {[
+                      ...insightSermon.insights.discussionQuestions,
+                      'Which households or ministry teams may need follow-up?',
+                      'What should be reviewed before these notes are shared?',
+                    ].map((question) => <li key={question}>{question}</li>)}
+                  </ul>
+                </section>
+
+                <section className="insight-content-card" aria-labelledby="discussion-prompts-title">
+                  <div className="insight-card-heading compact">
+                    <div>
+                      <p className="eyebrow">Community reflection</p>
+                      <h3 id="discussion-prompts-title">Discussion prompts</h3>
+                    </div>
+                  </div>
+                  <ul className="insight-prompt-list">
+                    {discussionPrompts.map((prompt) => <li key={prompt}>{prompt}</li>)}
+                  </ul>
+                </section>
+
+                <section className="insight-content-card" aria-labelledby="follow-up-ideas-title">
+                  <div className="insight-card-heading compact">
+                    <div>
+                      <p className="eyebrow">Possible next steps</p>
+                      <h3 id="follow-up-ideas-title">Follow-up ideas</h3>
+                    </div>
+                  </div>
+                  <ul className="insight-follow-up-list">
+                    {followUpIdeas.map((idea) => <li key={idea}><CheckCircle2 size={16} aria-hidden="true" /> <span>{idea}</span></li>)}
+                  </ul>
+                </section>
+              </div>
+
+              <section className="insight-review-card" aria-labelledby="insight-review-title">
+                <div>
+                  <p className="eyebrow">Local workflow preview</p>
+                  <h3 id="insight-review-title">Review status</h3>
+                  <p>Choose a state to preview the review path. Changes are not permanently saved.</p>
+                </div>
+                <div className="insight-review-steps" aria-label="Insight review status">
+                  {insightReviewStatuses.map((status) => (
+                    <button
+                      aria-pressed={insightReviewStatus === status}
+                      className={insightReviewStatus === status ? 'active' : undefined}
+                      key={status}
+                      onClick={() => setInsightReviewStatus(status)}
+                      type="button"
+                    >
+                      <span aria-hidden="true" /> {status}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              <p className="services-tab-note">
+                AI-style content shown here is fictional sample copy for product review. It is not an
+                approved theological interpretation and no generation service has been connected.
+              </p>
+            </>
+          )}
+        </div>
       )}
     </div>
   )
