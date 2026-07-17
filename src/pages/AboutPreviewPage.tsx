@@ -16,7 +16,7 @@ const principles = [
   {
     icon: LockKeyhole,
     title: 'Not a production system',
-    text: 'This preview has no authentication, backend, persistent storage, analytics, tracking, or external data submission.',
+    text: 'This is not a production system. Only the internal Ask NEXORA POC uses authenticated local backend endpoints, and it is restricted to synthetic data.',
   },
   {
     icon: Route,
@@ -74,9 +74,10 @@ export function AboutPreviewPage() {
         </div>
         <ul>
           <li><CircleCheck size={18} /> No live customer or personal data</li>
-          <li><CircleCheck size={18} /> No backend or external integrations</li>
+          <li><CircleCheck size={18} /> No external AI or third-party document integrations</li>
           <li><CircleCheck size={18} /> No analytics, cookies, or tracking</li>
           <li><CircleCheck size={18} /> No feedback is submitted or stored</li>
+          <li><CircleCheck size={18} /> Ask NEXORA accepts dummy documents only</li>
         </ul>
       </section>
 
