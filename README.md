@@ -4,7 +4,7 @@ NEXORA UI Preview is a separate, clickable concept environment for reviewing pro
 
 The current fictional advisor scenario uses a church-led multi-location network so church, outreach, and community-development workflows can be reviewed meaningfully. NEXORA is not positioned as an exclusively church-management product.
 
-This repository is **not** the production NEXORA application. It contains no backend, authentication, live integrations, analytics, tracking, or persistent data submission.
+This repository is **not** the production NEXORA application. Most screens remain local clickable mockups. The internal Ask NEXORA POC is the only backend-connected exception: it uses existing authenticated NEXORA endpoints for synthetic test documents and local dummy answers. The repository contains no external AI integrations, analytics, tracking, or production data paths.
 
 ## What is included
 
@@ -15,6 +15,7 @@ This repository is **not** the production NEXORA application. It contains no bac
 - Placeholder experiences for planned product areas
 - An informational “About this preview” screen
 - A local-only feedback modal that does not submit or store data
+- An authenticated, dummy-data-only Ask NEXORA RAG POC interface for local backend review
 
 ## Local setup
 
@@ -36,6 +37,8 @@ npm run dev
 ```
 
 Vite will print the local URL, normally `http://localhost:5173`.
+
+The Ask NEXORA POC additionally expects the existing NEXORA backend at `http://127.0.0.1:8000`. Vite proxies local `/api` requests to that backend. The backend feature flag and authenticated synthetic test user remain authoritative; see `docs/ai/ask-nexora/ui-usage.html` for the safe local workflow.
 
 ## Development commands
 
@@ -65,12 +68,12 @@ To deploy the preview manually:
 2. Select **Vite** as the framework preset if it is not detected automatically.
 3. Use `npm run build` as the build command.
 4. Use `dist` as the output directory.
-5. Do not add backend, analytics, tracking, or customer-data environment variables.
+5. Do not add analytics, tracking, customer-data, provider-key, or external AI environment variables.
 6. Deploy only after the stable preview has been reviewed.
 
 The included `vercel.json` rewrites all application routes to `index.html`, allowing direct refreshes on routes such as `/programs` or `/about-preview`.
 
-No deployment is performed automatically by this repository.
+No deployment is performed automatically by this repository. The static Vercel preview does not provide or proxy the Ask NEXORA backend; the RAG UI is intended for a controlled local environment until an approved same-origin deployment path exists.
 
 ## Branch strategy
 
@@ -97,8 +100,10 @@ All preview data must be invented, local, and safe to share with the intended re
 - Screens may represent planned capabilities that do not exist in the production product.
 - Workflow status labels are design-review aids, not delivery commitments.
 - Pricing, availability, and delivery timelines are not represented.
-- No authentication or access control is implemented.
-- No data is submitted, persisted, synchronised, or shared externally.
+- General preview routes do not represent production authentication or access control. The Ask NEXORA route requires an existing authenticated local backend session.
+- Ask NEXORA dummy uploads and answers may be stored by the existing tenant-scoped POC backend. Other preview interactions are not submitted or persisted.
+- Ask NEXORA accepts only dummy TXT, Markdown, CSV, or JSON files and rejects access when the backend feature flag or permissions deny it.
+- No Ask NEXORA content is sent to an external LLM, embedding provider, vector database, analytics, telemetry, or third-party document service.
 - Feedback entered in the modal is not stored and disappears when the modal is closed or the page is refreshed.
 - Dashboard figures, activities, events, and outcomes are fictional.
 
@@ -115,6 +120,8 @@ All preview data must be invented, local, and safe to share with the intended re
 - `/calendar`
 - `/locations`
 - `/reports`
+- `/ask-nexora` (authenticated local POC)
+- `/ask-nexora/login`
 - `/settings`
 - `/about-preview`
 

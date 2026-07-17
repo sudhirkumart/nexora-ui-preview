@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ask NEXORA UI POC Usage Guide</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --background: #f3f6f3;
+      --surface: #ffffff;
+      --ink: #18312e;
+      --muted: #5f6f6b;
+      --forest: #123f3a;
+      --teal: #2b766b;
+      --line: #d9e3dd;
+      --safe: #eaf5ef;
+      --warning: #fff7e7;
+      --danger: #fff1ef;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--background);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    main {
+      width: min(100% - 32px, 1040px);
+      margin: 0 auto;
+      padding: 36px 0 64px;
+    }
+
+    header,
+    section {
+      margin-bottom: 18px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+
+    h1,
+    h2,
+    h3 { line-height: 1.25; }
+
+    h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 5vw, 2.4rem); }
+    h2 { margin: 0 0 12px; font-size: 1.3rem; }
+    h3 { margin: 20px 0 8px; font-size: 1rem; }
+    p { margin: 0 0 12px; }
+    p:last-child { margin-bottom: 0; }
+    ol, ul { margin: 0; padding-left: 24px; }
+    li + li { margin-top: 7px; }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: #243d38;
+      background: #edf2ef;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 0.92em;
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      margin: 12px 0 0;
+      padding: 14px;
+      overflow-x: auto;
+      border-radius: 8px;
+      color: #edf6f2;
+      background: var(--forest);
+    }
+
+    pre code { padding: 0; color: inherit; background: transparent; }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .meta div {
+      padding: 12px;
+      border-radius: 8px;
+      background: #f2f6f3;
+    }
+
+    .meta strong,
+    .meta span { display: block; }
+    .meta span { color: var(--muted); font-size: 0.85rem; }
+
+    .callout {
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+    }
+
+    .callout.warning { border-color: #e7d09e; background: var(--warning); }
+    .callout.safe { border-color: #bdd8ca; background: var(--safe); }
+    .callout.danger { border-color: #e8beb8; background: var(--danger); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .steps article {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fafcfb;
+    }
+
+    .steps h3 { margin-top: 0; color: var(--teal); }
+
+    @media (max-width: 620px) {
+      main { width: min(100% - 20px, 1040px); padding-top: 18px; }
+      header, section { padding: 19px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Ask NEXORA UI POC Usage Guide</h1>
+      <p>A safe local workflow for reviewing the authenticated, dummy-data-only Ask NEXORA interface against the existing RAG foundation backend.</p>
+      <div class="meta">
+        <div><strong>UI branch</strong><span>feature/ask-nexora-rag-ui</span></div>
+        <div><strong>UI route</strong><span>/ask-nexora</span></div>
+        <div><strong>Backend mode</strong><span>local_dummy only</span></div>
+        <div><strong>Updated</strong><span>16 July 2026</span></div>
+      </div>
+    </header>
+
+    <section>
+      <div class="callout danger">
+        <h2>Dummy data only</h2>
+        <p>Do not use a production tenant, production credentials, beneficiary data, donor data, real NGO or church documents, customer information, exports, support records, emails, or operational documents. Create purpose-built synthetic files for this POC.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Local prerequisites</h2>
+      <ul>
+        <li>The existing NEXORA backend is running locally on <code>http://127.0.0.1:8000</code>.</li>
+        <li>The RAG foundation migration and synthetic seed data have been applied to a disposable local test database.</li>
+        <li><code>ASK_NEXORA_RAG_POC_ENABLED=true</code> is set only for that controlled local backend process.</li>
+        <li>An approved synthetic test user exists. Do not add credentials to this repository, source files, screenshots, or documentation.</li>
+      </ul>
+      <p>The backend repository's AI data-handling policy, RAG POC scope, progress log, and RAG usage guide remain the authority for backend setup and tenant-isolation validation.</p>
+    </section>
+
+    <section>
+      <h2>Start the UI</h2>
+      <p>From the <code>nexora-ui-preview</code> repository:</p>
+      <pre><code>npm install
+npm run dev</code></pre>
+      <p>Vite serves the preview, normally at <code>http://localhost:5173</code>, and proxies same-origin <code>/api</code> requests to the local backend on port 8000.</p>
+    </section>
+
+    <section>
+      <h2>Review workflow</h2>
+      <div class="steps">
+        <article>
+          <h3>1. Authenticate</h3>
+          <p>Open <code>/ask-nexora</code>. The protected route redirects to <code>/ask-nexora/login</code>. Sign in with an approved synthetic local account.</p>
+        </article>
+        <article>
+          <h3>2. Select a dummy file</h3>
+          <p>Choose a UTF-8 <code>.txt</code>, <code>.md</code>, <code>.markdown</code>, <code>.csv</code>, or <code>.json</code> file created specifically for testing.</p>
+        </article>
+        <article>
+          <h3>3. Confirm dummy data</h3>
+          <p>Read and select the confirmation checkbox. The UI sends <code>dummy_data_confirmed=true</code> only after this explicit confirmation.</p>
+        </article>
+        <article>
+          <h3>4. Upload</h3>
+          <p>The backend validates the file, creates deterministic local chunks, and returns the document status and chunk count.</p>
+        </article>
+        <article>
+          <h3>5. Ask a question</h3>
+          <p>Ask a concise question supported by the uploaded dummy file. The UI scopes the query to the returned document ID.</p>
+        </article>
+        <article>
+          <h3>6. Review evidence</h3>
+          <p>Confirm the response shows <code>local_dummy</code>, the answer status, ranked source labels, excerpts, and reference IDs.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Fail-closed behavior</h2>
+      <div class="callout warning">
+        <p>A <code>401</code> response ends the UI session and returns the user to sign-in. A <code>403</code> response places the page in an unavailable state because the backend feature flag or permissions denied access. The UI does not contain a client-side override.</p>
+      </div>
+      <ul>
+        <li>Unsupported, empty, oversized, malformed, or non-UTF-8 files display the backend validation error.</li>
+        <li>The question field remains disabled until a dummy document is uploaded successfully in the current UI session.</li>
+        <li>An answer with a mode other than <code>local_dummy</code> is not displayed by this POC UI.</li>
+        <li>Insufficient evidence may return no sources and should not be treated as an authoritative answer.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Security properties</h2>
+      <div class="callout safe">
+        <p>The UI adds no API keys, provider endpoints, external LLM calls, embeddings, vector database, telemetry, tracing, analytics, connectors, background jobs, autonomous actions, or writes to NEXORA business data.</p>
+      </div>
+      <ul>
+        <li>The access token is held in browser <code>sessionStorage</code> and is cleared on sign-out or when the tab session ends. The refresh token returned by the backend is not stored.</li>
+        <li>Tenant identity is never accepted from a UI field or request body. The backend derives it from the authenticated user and enforces tenant scope before retrieval.</li>
+        <li>Uploaded dummy files and POC answers may be persisted by the existing tenant-scoped backend and its internal audit controls.</li>
+        <li>All API requests are relative, same-origin browser requests through the local Vite proxy.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Known limitations</h2>
+      <ul>
+        <li>The backend exposes no feature-status endpoint, so availability is confirmed only when upload or query is attempted.</li>
+        <li>The backend exposes no document-list endpoint, so the UI works with one document uploaded during the current page session.</li>
+        <li>The static Vercel preview does not include a backend proxy. Ask NEXORA is local-only until an approved same-origin deployment architecture exists.</li>
+        <li>This is not a production authentication implementation, document library, AI assistant, or production Ask NEXORA release.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -23,6 +23,597 @@
   --topbar-height: 72px;
 }
 
+/* Ask NEXORA local RAG POC */
+.page.ask-nexora-page {
+  width: 100%;
+  max-width: 1240px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.page-heading.ask-nexora-page-heading {
+  align-items: center;
+}
+
+.ask-nexora-page-heading .page-description {
+  max-width: 760px;
+}
+
+.ask-nexora-warning,
+.ask-nexora-unavailable,
+.ask-nexora-safety-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border-radius: 12px;
+}
+
+.ask-nexora-warning {
+  margin-bottom: 26px;
+  padding: 18px 20px;
+  border: 1px solid #e6d4ad;
+  color: #674d25;
+  background: #fff9ed;
+}
+
+.ask-nexora-warning > svg,
+.ask-nexora-unavailable > svg,
+.ask-nexora-safety-note > svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.ask-nexora-warning h2,
+.ask-nexora-unavailable h2,
+.ask-nexora-safety-note h2 {
+  margin-bottom: 5px;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.ask-nexora-warning p,
+.ask-nexora-unavailable p,
+.ask-nexora-safety-note p {
+  max-width: 920px;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.ask-nexora-unavailable {
+  margin: -8px 0 26px;
+  padding: 18px 20px;
+  border: 1px solid #ebc3bd;
+  color: #7b332b;
+  background: #fff4f2;
+}
+
+.ask-nexora-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: start;
+  gap: 22px;
+}
+
+.ask-nexora-card,
+.ask-nexora-answer,
+.ask-nexora-login-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 9px 28px rgba(24, 49, 46, 0.055);
+}
+
+.ask-nexora-card,
+.ask-nexora-login-card {
+  padding: clamp(22px, 2.3vw, 30px);
+}
+
+.ask-nexora-card-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ask-nexora-card-heading > span {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--forest-mid);
+  background: var(--mint-soft);
+}
+
+.ask-nexora-card-heading .eyebrow {
+  margin-bottom: 3px;
+}
+
+.ask-nexora-card-heading h2 {
+  margin-bottom: 0;
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.3;
+}
+
+.ask-nexora-card-intro {
+  margin: 17px 0 21px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.ask-nexora-form {
+  display: grid;
+  gap: 13px;
+}
+
+.ask-nexora-form > label:not(.ask-nexora-file-field):not(.ask-nexora-confirmation),
+.ask-nexora-login-card form > label {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ask-nexora-form textarea,
+.ask-nexora-login-card input {
+  width: 100%;
+  border: 1px solid #cfdad4;
+  border-radius: 9px;
+  color: var(--ink);
+  background: #fff;
+  font-size: 14px;
+}
+
+.ask-nexora-form textarea {
+  min-height: 118px;
+  padding: 12px 13px;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.ask-nexora-login-card input {
+  height: 44px;
+  padding: 0 12px;
+}
+
+.ask-nexora-form textarea:focus,
+.ask-nexora-login-card input:focus {
+  border-color: var(--teal);
+  outline: 3px solid rgba(43, 118, 107, 0.16);
+  outline-offset: 1px;
+}
+
+.ask-nexora-form textarea:disabled,
+.ask-nexora-login-card input:disabled {
+  color: #78837f;
+  background: #f2f4f2;
+  cursor: not-allowed;
+}
+
+.visually-hidden-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
+}
+
+.ask-nexora-file-field {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 16px;
+  border: 1px dashed #aec3bb;
+  border-radius: 10px;
+  color: var(--forest-mid);
+  background: #f7faf8;
+  cursor: pointer;
+}
+
+.ask-nexora-file-field:hover {
+  border-color: var(--teal);
+  background: var(--mint-soft);
+}
+
+.visually-hidden-file-input:focus-visible + .ask-nexora-file-field {
+  outline: 3px solid rgba(43, 118, 107, 0.28);
+  outline-offset: 2px;
+}
+
+.visually-hidden-file-input:disabled + .ask-nexora-file-field {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ask-nexora-file-field > span {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.ask-nexora-file-field strong,
+.ask-nexora-file-field small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ask-nexora-file-field strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.ask-nexora-file-field small {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.ask-nexora-confirmation {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  padding: 13px 14px;
+  border-radius: 9px;
+  color: #53615d;
+  background: #f6f7f5;
+  font-size: 12px;
+  line-height: 1.55;
+  cursor: pointer;
+}
+
+.ask-nexora-confirmation input {
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: var(--forest-mid);
+}
+
+.ask-nexora-confirmation:has(input:disabled) {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+.ask-nexora-form .button,
+.ask-nexora-login-card .button {
+  justify-self: start;
+  min-height: 42px;
+  margin-top: 3px;
+}
+
+.ask-nexora-page .button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ask-nexora-error {
+  padding: 11px 12px;
+  border: 1px solid #e8c3bd;
+  border-radius: 8px;
+  color: #7d342c;
+  background: #fff5f3;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ask-nexora-document-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 19px;
+  padding: 14px;
+  border: 1px solid #c9ddd5;
+  border-radius: 9px;
+  color: #256256;
+  background: #f0f8f4;
+}
+
+.ask-nexora-document-result > svg {
+  flex: 0 0 auto;
+}
+
+.ask-nexora-document-result div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.ask-nexora-document-result strong {
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.ask-nexora-document-result span,
+.ask-nexora-input-meta {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.ask-nexora-input-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: -5px;
+}
+
+.ask-nexora-input-meta span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ask-nexora-answer {
+  margin-top: 24px;
+  padding: clamp(23px, 2.5vw, 34px);
+}
+
+.ask-nexora-answer-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.ask-nexora-answer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.ask-nexora-answer-meta span {
+  padding: 5px 9px;
+  border: 1px solid #d6e2dc;
+  border-radius: 999px;
+  color: var(--forest-mid);
+  background: #f6f9f7;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.ask-nexora-answer-copy {
+  max-width: 920px;
+  margin: 24px 0 28px;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.ask-nexora-sources {
+  padding-top: 23px;
+  border-top: 1px solid var(--line);
+}
+
+.ask-nexora-sources > div:first-child {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ask-nexora-sources h3 {
+  margin-bottom: 5px;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.ask-nexora-sources > div:first-child p {
+  margin-bottom: 5px;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.ask-nexora-sources ol {
+  display: grid;
+  gap: 12px;
+  margin: 15px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ask-nexora-sources li {
+  padding: 16px;
+  border: 1px solid #dde5e0;
+  border-radius: 10px;
+  background: #fafbf9;
+}
+
+.ask-nexora-source-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ask-nexora-source-heading strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.ask-nexora-source-heading span {
+  flex: 0 0 auto;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.ask-nexora-sources blockquote {
+  margin: 11px 0;
+  padding-left: 13px;
+  border-left: 3px solid #b9d5ca;
+  color: #43534f;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.ask-nexora-sources details {
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.ask-nexora-sources summary {
+  width: fit-content;
+  color: var(--forest-mid);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ask-nexora-sources dl {
+  display: grid;
+  gap: 5px;
+  margin: 10px 0 0;
+}
+
+.ask-nexora-sources dl div {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.ask-nexora-sources dt {
+  font-weight: 700;
+}
+
+.ask-nexora-sources dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.ask-nexora-no-sources {
+  margin: 15px 0 0;
+  padding: 14px;
+  border-radius: 9px;
+  color: var(--ink-soft);
+  background: #f6f7f5;
+  font-size: 13px;
+}
+
+.ask-nexora-footnote {
+  max-width: 900px;
+  margin: 20px 0 0;
+  color: #78847f;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.ask-nexora-login-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 540px) minmax(280px, 420px);
+  align-items: start;
+  justify-content: center;
+  gap: 24px;
+}
+
+.ask-nexora-login-card form {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.ask-nexora-login-card form > label:not(:first-of-type) {
+  margin-top: 5px;
+}
+
+.ask-nexora-safety-note {
+  padding: 22px;
+  border: 1px solid #d7e2dd;
+  color: var(--ink-soft);
+  background: #f7faf8;
+}
+
+.ask-nexora-safety-note h2 {
+  color: var(--ink);
+}
+
+.ask-nexora-safety-note p + p {
+  margin-top: 11px;
+}
+
+@media (max-width: 920px) {
+  .ask-nexora-workspace,
+  .ask-nexora-login-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ask-nexora-login-layout {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .ask-nexora-page-heading {
+    display: grid;
+    align-items: start;
+  }
+
+  .ask-nexora-page-heading .button {
+    justify-self: start;
+  }
+
+  .ask-nexora-warning,
+  .ask-nexora-unavailable,
+  .ask-nexora-safety-note {
+    padding: 16px;
+  }
+
+  .ask-nexora-card,
+  .ask-nexora-answer,
+  .ask-nexora-login-card {
+    padding: 20px 17px;
+  }
+
+  .ask-nexora-answer-heading,
+  .ask-nexora-sources > div:first-child {
+    display: grid;
+  }
+
+  .ask-nexora-answer-meta {
+    justify-content: flex-start;
+  }
+
+  .ask-nexora-form .button,
+  .ask-nexora-login-card .button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+  .ask-nexora-warning > svg,
+  .ask-nexora-unavailable > svg,
+  .ask-nexora-safety-note > svg {
+    display: none;
+  }
+
+  .ask-nexora-card-heading > span {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .ask-nexora-card-heading h2 {
+    font-size: 17px;
+  }
+
+  .ask-nexora-source-heading {
+    display: grid;
+    gap: 4px;
+  }
+
+  .ask-nexora-sources dl div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
 * {
   box-sizing: border-box;
 }

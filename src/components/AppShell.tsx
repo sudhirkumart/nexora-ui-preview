@@ -42,6 +42,7 @@ const navigation = [
 ]
 
 const secondaryNavigation = [
+  { label: 'Ask NEXORA', to: '/ask-nexora', icon: MessageSquareText },
   { label: 'Settings', to: '/settings', icon: Settings },
   { label: 'About this preview', to: '/about-preview', icon: CircleHelp },
 ]
@@ -73,6 +74,8 @@ export function AppShell({ children }: AppShellProps) {
 
   const routeLabel = location.pathname.startsWith('/services')
     ? 'Services & Events'
+    : location.pathname.startsWith('/ask-nexora')
+      ? 'Ask NEXORA'
     : [...navigation, ...secondaryNavigation].find((item) =>
       location.pathname === '/' ? item.to === '/dashboard' : item.to === location.pathname,
     )?.label ?? 'Preview'
